@@ -8,7 +8,7 @@ interface Options {
 export class Server {
     public readonly app = express();
     private readonly port: number;
-    private readonly routes: Router();
+    private readonly routes: Router;
 
     constructor(options: Options){
         this.port = options.port;
