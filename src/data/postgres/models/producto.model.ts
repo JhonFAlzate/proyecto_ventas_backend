@@ -35,7 +35,7 @@ import { Inventario } from "./inventarioProducto.model";
         enum: TipoProducto,
         nullable: false,
       })
-    tipoProducto: TipoProducto;
+    tipoProducto: TipoProducto | string;
 
     @Column({
         type: 'int',
@@ -47,7 +47,6 @@ import { Inventario } from "./inventarioProducto.model";
     @Column({
         type: 'int',
         nullable: false,
-        default: 1
         
     })
     precioCompra: number;
