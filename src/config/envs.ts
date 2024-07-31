@@ -8,4 +8,5 @@ export const envs = {
   DB_PASSWORD: get("DATABASE_PASSWORD").required().asString(),
   DB_DATABASE: get("DATABASE_DATABASE").required().asString(),
   DB_PORT: get("DATABASE_PORT").required().asPortNumber(),
+  JWT_SEED: get("JWT_SEED").required().asString(),
 };
