@@ -1,4 +1,9 @@
 import { DataSource } from "typeorm";
+import { Clientes } from "./models/clientes.model";
+import { Inventario } from "./models/inventarioProducto.model";
+import { Producto } from "./models/producto.model";
+import { Usuarios } from "./models/usuarios.model";
+import { Ventas } from "./models/ventas.model";
 
 interface Options {
   host: string;
@@ -19,7 +24,7 @@ export class PostgresDatabase {
       username: options.username,
       password: options.password,
       database: options.database,
-      entities: [],
+      entities: [Clientes, Inventario, Producto, Usuarios, Ventas],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
