@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -11,12 +12,7 @@ import {
 } from "typeorm";
 import { Ventas } from "./ventas.model";
 import { bcryptAdapter } from "../../../config/bcrypt.adapter";
-
-export enum RolDeUsuario {
-  ADMIN = "ADMIN",
-  VENDEDOR = "VENDEDOR",
-  CLIENTE = "CLIENTE",
-}
+import { RolDeUsuario, Status } from "./@types/usuarios.types";
 
 @Entity()
 export class Usuarios extends BaseEntity {
@@ -36,10 +32,29 @@ export class Usuarios extends BaseEntity {
   apellido: string;
 
   @Column("varchar", {
+    nullable: false,
+    unique: true,
+    length: 10,
+  })
+  telefono: string;
+
+  @Column("varchar", {
     length: 255,
     nullable: false,
   })
   password: string;
+
+  @Column({
+    type: "enum",
+    enum: Status,
+    default: Status.ACTIVO,
+  })
+  status: Status;
+
+  @BeforeUpdate()
+  encryptPasswordUpdate() {
+    this.password = bcryptAdapter.hash(this.password);
+  }
 
   @BeforeInsert()
   encryptPassword() {

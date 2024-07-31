@@ -1,13 +1,11 @@
 import { Router } from "express";
+import { UsuarioRoutes } from "./usuarios/usuarios.routes";
 
 export class AppRoutes {
   static get routes(): Router {
     const router = Router();
 
-    //router.use('/api/v1/auth', AuthRoutes.routes)
-
-    //router.use()
-    //TODO: aca tambien iran todos los metodos que necesitamos para gestionar los los purchases
+    router.use("/api/v1/usuario", UsuarioRoutes.routes);
 
     return router;
   }

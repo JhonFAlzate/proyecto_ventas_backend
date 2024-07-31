@@ -1,15 +1,15 @@
 export class LoginUsuarioDTO {
   private constructor(
-    public readonly nombre: string,
+    public readonly telefono: string,
     public readonly password: string
   ) {}
 
   static create(object: { [key: string]: any }): [string?, LoginUsuarioDTO?] {
-    const { nombre, password } = object;
+    const { telefono, password } = object;
 
-    if (!nombre) return ["Se requiere el nombre"];
+    if (!telefono) return ["Se requiere el telefono"];
     if (!password) return ["Se requiere el password"];
 
-    return [undefined, new LoginUsuarioDTO(nombre, password)];
+    return [undefined, new LoginUsuarioDTO(telefono, password)];
   }
 }
