@@ -2,7 +2,9 @@
 
 
 
-export class ProductoDto {
+
+
+export class UpdateProductosDto {
 
     private constructor(
         public readonly nombreProducto: string,
@@ -11,16 +13,15 @@ export class ProductoDto {
         public readonly precioCompra: number,
     ){}
 
-    static createProductoDto ( object: {[key: string]: any}): [string?, ProductoDto?]{
+    static updateProducto ( object: {[key: string]: any}): [string?, UpdateProductosDto?]{
         const { nombreProducto, tipoProducto, precioVenta, precioCompra} = object;
         
         if(!nombreProducto) return ['Faltó el nombre del producto']
         if(!tipoProducto) return ['Faltó el tipo de prodcuto']
         if(!precioVenta) return ['Faltó el precio de venta']
-        if(!precioCompra) return ['Fata el precio de compra']
-        
+        if(!precioCompra) return ['Falta precio de Compra']
 
-        return [undefined, new ProductoDto(nombreProducto, tipoProducto, precioVenta, precioCompra)]
+        return [undefined, new UpdateProductosDto(nombreProducto, tipoProducto, precioVenta, precioCompra)]
 
     }
 }

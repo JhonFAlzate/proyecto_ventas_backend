@@ -51,6 +51,38 @@ export class ProductoService {
         if(producto) throw CustomError.badRequest("This name is already existing");
         return producto
 
+    }
 
+    async findAllProductos(){
+        const producto = await Producto.find();
+        return producto;
+    }
+
+    async updateProductos(productoDto: ProductoDto, id: number){
+        const producto = await this.findOneProduct(id);
+
+        if(!producto) throw CustomError.notFound(`Producto con id ${id} no existe`)
+
+        producto.nombreProducto = productoDto.nombreProducto;
+        producto.tipoProducto = productoDto.tipoProducto;
+        producto.precioVenta = productoDto.precioVenta;
+        producto.precioCompra = productoDto.precioCompra;
+        
+        try {
+            return await producto.save();
+        } catch (error) {
+            throw CustomError.internalServer("Something went very wrong! 😵‍💫😵‍💫");
+        }
+    }
+
+    async deleteProducto(id: number){
+        const producto = await this.findOneProduct(id)
+        producto.remove()
+
+        try {
+            await producto.save()
+        } catch (error) {
+            throw CustomError.internalServer("Something went very wrong! 😵‍💫😵‍💫")
+        }
     }
 }
