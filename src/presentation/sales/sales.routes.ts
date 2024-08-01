@@ -1,13 +1,18 @@
 import { Router } from "express";
 import { SalesContoller } from "./sales.controller";
 import { SalesServices } from "../services/sale.service";
+import { UsuarioService } from "../services/usuario.service";
+import { ProductoService } from "../services/producto.service";
 
 export class SalesRoutes{
 
     static get routes():Router{
         const router =  Router();
 
-        const services = new SalesServices();
+        const servicesUser =  new UsuarioService();
+        const servicesProduct =  new ProductoService();
+
+        const services = new SalesServices(servicesUser,servicesProduct );
 
         const contoller =  new SalesContoller(services);
 

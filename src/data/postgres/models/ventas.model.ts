@@ -10,6 +10,7 @@ import {
 import { Usuarios } from "./usuarios.model";
 import { Producto } from "./producto.model";
 import { Clientes } from "./clientes.model";
+import { Status } from "./@types/usuarios.types";
   
   @Entity()
   export class Ventas extends BaseEntity {
@@ -22,6 +23,13 @@ import { Clientes } from "./clientes.model";
 
     })
     cantidad: number;
+
+    @Column({
+      type: "enum",
+      enum: Status,
+      default: Status.ACTIVO,
+    })
+    status: Status;
 
     @ManyToOne(() => Usuarios, (usuario) => usuario.ventas)
     usuario: Usuarios;
