@@ -13,11 +13,13 @@ export class SalesContoller{
       };
 
     createSale=(req:Request, res:Response)=>{
+        const {id} = req.body.userSession;
+
         const [error, salesData] = SalesCreateDto.create(req.body);
 
         if(error) return res.status(422).json(error);
 
-        this.salesServices.create(salesData!)
+        this.salesServices.create(salesData!, id)
             .then(sale=> res.status(202).json(sale))
             .catch(error=> this.handleError(error, res));
     };

@@ -1,4 +1,4 @@
-import { Ventas } from "../../data";
+import { Clientes, Ventas } from "../../data";
 import { CustomError, SalesCreateDto, SalesUpdateDto } from "../../domain";
 import { ProductoService } from "./producto.service";
 import { UsuarioService } from "./usuario.service";
@@ -12,33 +12,36 @@ export class SalesServices{
         private readonly servicesProduct : ProductoService
     ){};
 
-    async create(saleData:SalesCreateDto){
-        // falta el cliente poder ver si el cliente existe;
-        const userPromise = this.usuarioService.obtenerPerfilDeUsuarioPorId(1);
+    async create(saleData:SalesCreateDto, id:number){
+
+        const userPromise = this.usuarioService.obtenerPerfilDeUsuarioPorId(id);
         const productPromise = this.servicesProduct.findOneProduct(1);
+        const clientPromise =  this.clientById(1);
+        
+        const [user, product, client] =  await Promise.all([userPromise, productPromise, clientPromise]);
 
-
-        const [user, product] =  await Promise.all([userPromise, productPromise]);
 
         const sale =  new Ventas();
 
         sale.cantidad =  saleData.cantidad;
         sale.usuario =  user;
         sale.producto =  product;
-
+        sale.cliente = client; 
 
         return await sale.save();
 
     };
 
     async getAll(){
-        const sales =  Ventas.findOne({
+        const sales = await Ventas.find({
             where: {
                 status : Status.ACTIVO
             }
         });
 
         if(!sales) throw CustomError.notFound("Not found sale");
+
+        return sales;
     };
 
     async getId(id:number){
@@ -52,31 +55,36 @@ export class SalesServices{
     };
 
     async update(saleData:SalesUpdateDto, id:number){
-         // falta el cliente poder ver si el cliente existe;
-        const userPromise = this.usuarioService.obtenerPerfilDeUsuarioPorId(id);
+        const userPromise = this.usuarioService.obtenerPerfilDeUsuarioPorId(4);
         const productPromise = this.servicesProduct.findOneProduct(1);
-
-
-        const [user, product] =  await Promise.all([userPromise, productPromise]);
-
-        const sale =  new Ventas();
+        const clientPromise =  this.clientById(1);
+        const salePromise =  this.getId(id);
+        
+        const [user, product, client, sale] =  await Promise.all([userPromise, productPromise, clientPromise, salePromise]);
 
         sale.cantidad =  saleData.cantidad;
         sale.usuario =  user;
         sale.producto =  product;
+        sale.cliente = client; 
 
-
-        return await sale.save();
+        return await sale.save() 
     };
 
     async delete(id:number){
-        await this.getId(id);
-        const sale =  new Ventas();
+        const sale = await this.getId(id);
 
         sale.status = Status.INACTIVO;
 
         return await sale.save();
     };
 
+    async clientById(id:number){
+        const client = await Clientes.findOne({
+            where : {id}
+        });
+
+        if(!client) throw CustomError.notFound("Not found client");
+        return client;
+    };
 
 };

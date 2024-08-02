@@ -121,16 +121,8 @@ export class UsuarioService {
     const usuario = await Usuarios.findOne({
       where: {
         id,
-      },
-      select: {
-        nombre: true,
-        apellido: true,
-        telefono: true,
-        role: true,
-        status: true,
-      },
+      }
     });
-    // console.log(usuario);
 
     if (!usuario) throw CustomError.notFound("Usuario no encontrado");
 

@@ -3,6 +3,7 @@ import { SalesContoller } from "./sales.controller";
 import { SalesServices } from "../services/sale.service";
 import { UsuarioService } from "../services/usuario.service";
 import { ProductoService } from "../services/producto.service";
+import { AuthMiddleware } from "../middleware";
 
 export class SalesRoutes{
 
@@ -16,6 +17,8 @@ export class SalesRoutes{
 
         const contoller =  new SalesContoller(services);
 
+
+        router.use(AuthMiddleware.protected);
 
         router.get("/", contoller.getAllSale);
         router.get("/:id", contoller.getSaleById);
