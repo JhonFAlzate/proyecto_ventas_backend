@@ -9,7 +9,7 @@ export class CreateInventarioDto {
         public readonly cantidadStock: number,
     ){}
 
-    static createUser ( object: {[key: string]: any}): [string?, CreateInventarioDto?]{
+    static create ( object: {[key: string]: any}): [string?, CreateInventarioDto?]{
         const { productoId, cantidadStock} = object
 
         if(!productoId) return ['Falta el id del producto']

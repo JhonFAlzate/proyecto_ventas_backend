@@ -14,17 +14,16 @@ export class ProductoService {
   async createProducto(createProductoDto: ProductoDto) {
     const producto = new Producto();
 
-    const productoPromise = await this.findOneProductByname(
-      createProductoDto.nombreProducto
-    );
-    if (productoPromise)
-      throw CustomError.badRequest("Name of product existing ... 🤷‍♂️");
+    // const productoPromise = await this.findOneProductByname(
+    //   createProductoDto.nombreProducto
+    // );
+    // if (productoPromise) throw CustomError.badRequest("Name of product existing ... 🤷‍♂️");
 
     producto.nombreProducto = createProductoDto.nombreProducto;
     producto.tipoProducto = createProductoDto.tipoProducto;
     producto.precioVenta = createProductoDto.precioVenta;
     producto.precioCompra = createProductoDto.precioCompra;
-
+    console.log(producto)
     try {
       return await producto.save();
     } catch (error) {
@@ -39,8 +38,12 @@ export class ProductoService {
       },
     });
     if (!producto) throw CustomError.notFound("Producto not found");
+
+
     return producto;
   }
+
+
 
   async findOneProductByname(nombreProducto: string) {
     const producto = await Producto.findOne({
@@ -52,10 +55,12 @@ export class ProductoService {
     return producto;
   }
 
+
   async findAllProductos() {
     const producto = await Producto.find();
     return producto;
   }
+
 
   async updateProductos(productoDto: ProductoDto, id: number) {
     const producto = await this.findOneProduct(id);
