@@ -51,11 +51,13 @@ import { Inventario } from "./inventarioProducto.model";
     })
     precioCompra: number;
 
+
     @OneToMany(() => Ventas, (venta) => venta.producto)
     venta: Ventas[]
 
-    @ManyToOne(() => Inventario, (inventario) => inventario.productoId)
-    inventario: Inventario;
+    @OneToMany(() => Inventario, (inventario) => inventario.productoId)
+    inventario: Inventario
+
 
     @CreateDateColumn()
     created_at: Date;

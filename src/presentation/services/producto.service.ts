@@ -12,22 +12,22 @@ export class ProductoService {
   constructor() {}
 
   async createProducto(createProductoDto: ProductoDto) {
+    
+    const productoPromise = await this.findOneProductByname(createProductoDto.nombreProducto);
+    if (productoPromise) throw CustomError.badRequest("Name of product existing ... 🤷‍♂️");
+    
     const producto = new Producto();
-
-    // const productoPromise = await this.findOneProductByname(
-    //   createProductoDto.nombreProducto
-    // );
-    // if (productoPromise) throw CustomError.badRequest("Name of product existing ... 🤷‍♂️");
-
-    producto.nombreProducto = createProductoDto.nombreProducto;
-    producto.tipoProducto = createProductoDto.tipoProducto;
+    producto.nombreProducto = createProductoDto.nombreProducto.toLocaleLowerCase().trim();
+    producto.tipoProducto = createProductoDto.tipoProducto.toLocaleUpperCase().trim();
     producto.precioVenta = createProductoDto.precioVenta;
     producto.precioCompra = createProductoDto.precioCompra;
-    console.log(producto)
+
+
     try {
       return await producto.save();
     } catch (error) {
-      throw CustomError.internalServer("Something went wrong..😵‍💫");
+      console.log(error)
+      throw CustomError.internalServer("Something went wrong..😵‍💫 ");
     }
   }
 
@@ -48,7 +48,7 @@ export class ProductoService {
   async findOneProductByname(nombreProducto: string) {
     const producto = await Producto.findOne({
       where: {
-        nombreProducto,
+        nombreProducto: nombreProducto.toLocaleLowerCase(),
       },
     });
     if (producto) throw CustomError.badRequest("This name is already existing");

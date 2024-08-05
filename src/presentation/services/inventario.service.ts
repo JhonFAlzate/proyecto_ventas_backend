@@ -18,26 +18,26 @@ export class InventarioService {
         const producto = await this.productoService.findOneProduct(createInventario.productoId)
 
 
-        // if(!inventarioExisting) throw CustomError.notFound('Producto no encontrado')
+        if(!inventarioExisting) throw CustomError.notFound('Producto no encontrado')
 
-        // const producto = await Producto.findOne({
-        //     where:{
-        //         id: createInventario.productoId,
-        //     },
-        // })
+        const producto = await Producto.findOne({
+            where:{
+                id: createInventario.productoId,
+            },
+        })
 
-        // if(!producto) throw CustomError.notFound("Producto no existe");
+        if(!producto) throw CustomError.notFound("Producto no existe");
 
 
         inventario.cantidadStock = createInventario.cantidadStock
-        // inventario.productoId = producto
+        inventario.productoId = producto
        console.log(producto)
 
-        // try {
-        //     return await inventario.save();
-        // } catch (res) {
-        //     throw CustomError.internalServer("Something went wrong")
-        // }
+        try {
+            return await inventario.save();
+        } catch (res) {
+            throw CustomError.internalServer("Something went wrong")
+        }
     }
 
     async findInventarioProductoId(productoId: number){
