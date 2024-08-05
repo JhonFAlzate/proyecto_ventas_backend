@@ -1,6 +1,6 @@
 import { Producto } from "../../data/postgres/models/producto.model";
 import { CustomError } from "../../domain";
-import { ProductoDto } from "../../domain/dtos/createProducto.dto";
+import { ProductoDto } from "../../domain/dtos/productos/createProducto.dto";
 
 export enum TipoProducto {
   TORTAS = "TORTAS",

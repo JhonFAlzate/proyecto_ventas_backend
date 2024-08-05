@@ -5,6 +5,7 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -24,9 +25,9 @@ import { Producto } from "./producto.model";
     })
     cantidadStock: number;
 
-    @OneToOne(() => Producto, (producto) => producto.inventario)
-    @JoinColumn()
-    producto: Producto;
+    @OneToMany(() => Producto, (producto) => producto.inventario)
+    // @JoinColumn()
+    productoId: Producto[];
 
     @CreateDateColumn()
     created_at: Date;

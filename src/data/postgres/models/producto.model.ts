@@ -54,7 +54,7 @@ import { Inventario } from "./inventarioProducto.model";
     @OneToMany(() => Ventas, (venta) => venta.producto)
     venta: Ventas[]
 
-    @OneToOne(() => Inventario, (inventario) => inventario.producto)
+    @ManyToOne(() => Inventario, (inventario) => inventario.productoId)
     inventario: Inventario;
 
     @CreateDateColumn()

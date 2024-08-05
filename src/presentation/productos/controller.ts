@@ -4,7 +4,7 @@
 import { Request, Response } from "express";
 import { CustomError, ProductoDto } from "../../domain";
 import { ProductoService } from "../services/producto.service";
-import { UpdateProductosDto } from "../../domain/dtos/update-producto.dto";
+import { UpdateProductosDto } from "../../domain/dtos/productos/update-producto.dto";
 
 
 export class ProductosController {
