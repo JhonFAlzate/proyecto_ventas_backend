@@ -45,6 +45,9 @@ export class ProductosController {
 
     getOneProducto = async (req: Request, res: Response) => {
         const {id} = req.params;
+        if (isNaN(+id)) {
+            return res.status(400).json({ message: "El id debe ser un número" });
+          }
 
         this.productoService.findOneProduct(+id)
         .then((producto) => res.status(200).json(producto))

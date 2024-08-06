@@ -12,50 +12,67 @@ export class InventarioService {
     ){}
 
 
-    async createInventario(createInventario: CreateInventarioDto){
-        const inventario = new Inventario();
+    async createInventario(createInventarioDto: CreateInventarioDto){
 
-        const producto = await this.productoService.findOneProduct(createInventario.productoId)
+     const producto = await this.productoService.findOneProduct(createInventarioDto.productoId)
+     
+     
+     const productoExisteEnInventario = await this.findInventarioProductoId(createInventarioDto.productoId)
+     
+     if(productoExisteEnInventario) throw CustomError.badRequest("Este producto ya tiene un inventario")
 
+     const inventario = new Inventario();
 
-        if(!inventarioExisting) throw CustomError.notFound('Producto no encontrado')
+     inventario.cantidadStock = createInventarioDto.cantidadStock
+     inventario.productoId = producto
 
-        const producto = await Producto.findOne({
-            where:{
-                id: createInventario.productoId,
-            },
-        })
-
-        if(!producto) throw CustomError.notFound("Producto no existe");
-
-
-        inventario.cantidadStock = createInventario.cantidadStock
-        inventario.productoId = producto
-       console.log(producto)
-
-        try {
-            return await inventario.save();
-        } catch (res) {
-            throw CustomError.internalServer("Something went wrong")
-        }
+     try {
+        return await inventario.save();
+     } catch (error) {
+        throw CustomError.internalServer("Something went wrong")
+     }
     }
 
-    async findInventarioProductoId(productoId: number){
-        const producto = await Producto.findOne({
+
+    //Éste metodo tiene como finalidad revisar si el producto ya tiene un registro de inventario//
+    async findInventarioProductoId(productoId: any){
+        const productoEnInventario = await Inventario.findOne({
             where:{
-                id: productoId,
+                productoId: productoId
             },
-            relations: ["inventario"],
-            select: {
-                inventario: {
-                    id: true
-                }
-            }
-        })
-        if(!producto) throw CustomError.notFound("Producto no encontrado");
-        const inventario = producto.inventario;
-        
-        if(!inventario) throw CustomError.notFound("Producto no tiene inventario");
+            
+        })     
+       
+        return productoEnInventario
+    }
+
+
+
+
+    async buscarInventarioById(id:number){
+        const inventario = await Inventario.findOne({
+            where:{
+                id: id
+            },
+            relations: ['productoId'],
+        });
+        if(!inventario) throw CustomError.notFound(`inventario con id ${id} no encontrado`)
+
         return inventario
     }
+
+
+    //ojo este metodo no está funcionando aún.....
+    async deleteInventario(id:number) {
+        const inventario = await this.findInventarioProductoId(id);
+        console.log(inventario)
+        inventario?.remove();
+        try {
+            await inventario?.save();
+          } catch (error) {
+            throw CustomError.internalServer("Something went very wrong! 😵‍💫😵‍💫");
+          }
+
+    }
+
 }

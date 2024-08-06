@@ -25,9 +25,9 @@ import { Producto } from "./producto.model";
     })
     cantidadStock: number;
 
-    @OneToMany(() => Producto, (producto) => producto.inventario)
+    @ManyToOne(() => Producto, (producto) => producto.inventario)
+    productoId: Producto;
     // @JoinColumn()
-    productoId: Producto[];
 
     @CreateDateColumn()
     created_at: Date;

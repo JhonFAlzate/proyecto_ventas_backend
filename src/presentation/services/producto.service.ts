@@ -36,10 +36,12 @@ export class ProductoService {
       where: {
         id,
       },
+      select:{
+        id: true,
+        nombreProducto: true
+      },
     });
     if (!producto) throw CustomError.notFound("Producto not found");
-
-
     return producto;
   }
 

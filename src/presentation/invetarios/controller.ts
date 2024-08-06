@@ -33,4 +33,25 @@ export class InventarioController {
         .catch((error: unknown) => this.handleError(error, res));
 
     }
+
+    getOneInventario = async (req: Request, res: Response) => {
+        const {id} = req.params;
+        if (isNaN(+id)) {
+            return res.status(400).json({ message: "El id debe ser un número" });
+          }
+
+        this.serviceInventario.buscarInventarioById(+id)
+        .then((inventario) => res.status(200).json(inventario))
+        .catch((error: unknown) => this.handleError(error, res))
+    }
+
+    borrarInventario = (req: Request, res:Response) => {
+        const {productoId} = req.params
+        if(isNaN(+productoId)){
+            return res.status(400).json({message: "El id debe ser un número"})
+        }
+        this.serviceInventario.deleteInventario(+productoId)
+        .then((inventario) => res.status(204).json(inventario))
+        .catch((error: unknown) => this.handleError(error, res))
+    }
 }
