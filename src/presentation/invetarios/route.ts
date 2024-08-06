@@ -19,8 +19,11 @@ export class InvetarioRoutes {
         const service = new InventarioService(productoService)
         const controller = new InventarioController(service)
 
+        router.get("/", controller.getAllInventario)
         router.get("/:id", controller.getOneInventario);
         router.post("/", controller.crearInventario);
+        router.patch("/:id", controller.updateInventori)
+        router.delete("/:id", controller.borrarInventario)
         // router.delete("/:productoId", controller.borrarInventario);
 
         return router
