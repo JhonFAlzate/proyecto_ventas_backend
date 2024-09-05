@@ -40,6 +40,7 @@ export class ProductoService {
         id: true,
         nombreProducto: true
       },
+      relations : ['inventario']
     });
     if (!producto) throw CustomError.notFound("Producto not found");
     return producto;
@@ -84,10 +85,13 @@ export class ProductoService {
 
   async deleteProducto(id: number) {
     const producto = await this.findOneProduct(id);
-    producto.remove();
 
+    console.log(producto);
+    // await producto.remove();
+
+    
     try {
-      await producto.save();
+      // await producto.save();
     } catch (error) {
       throw CustomError.internalServer("Something went very wrong! 😵‍💫😵‍💫");
     }
