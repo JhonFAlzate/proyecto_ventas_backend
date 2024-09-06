@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import cors from 'cors';
-import { error } from "console";
 
+import morgan from 'morgan';
 
 interface Options {
   port: number;
@@ -19,6 +19,8 @@ export class Server {
     this.routes = options.routes;
   }
   async start() {
+
+    //Middleware
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use( cors({
@@ -33,6 +35,8 @@ export class Server {
       }
     }) )
 
+
+    this.app.use(morgan('dev'));
     this.app.use(this.routes);
 
     this.app.listen(this.port, () => {

@@ -38,7 +38,10 @@ export class ProductoService {
       },
       select:{
         id: true,
-        nombreProducto: true
+        nombreProducto: true, 
+        tipoProducto: true, 
+        precioVenta: true,
+        precioCompra: true,
       },
       relations : ['inventario']
     });
